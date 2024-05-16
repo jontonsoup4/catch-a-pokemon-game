@@ -159,7 +159,7 @@ export const PokemonGame = () => {
   return (
     <div className="max-h-screen w-full flex flex-col items-center justify-start">
       <div className="my-8 w-72" ref={controlsRef}>
-        <h2 className="mb-2 font-bold text-2xl">Closest Trainer{trainersSortedByTime.length > 1 ? 's' : ''}</h2>
+        <h2 className="mb-2 font-bold text-2xl">{pluralize('Winning Trainer', trainersSortedByTime.length)}</h2>
         <div>
           <span className="font-bold">{pluralize('Name', trainersSortedByTime.length)}:</span>{' '}
           {trainersSortedByTime.map((trainer) => trainer?.name).join(', ')}

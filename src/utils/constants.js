@@ -14,18 +14,15 @@ export const GRID = {
 export const ENTITY = {
   POKEMON: {
     type: 'POKEMON',
-    bgColor: 'bg-red-500',
   },
   TRAINER: {
     type: 'TRAINER',
-    bgColor: 'bg-purple-500',
     min: 1,
     max: 10,
     default_num: 7,
   },
   LAND: {
     type: 'LAND',
-    bgColor: 'bg-green-500',
   },
   POKEBALL: {
     type: 'POKEBALL',

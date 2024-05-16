@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, Suspense } from 'react';
 import clsx from 'clsx';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Float } from '@headlessui-float/react';
@@ -230,10 +230,7 @@ export const PokemonGame = () => {
                 return (
                   <div
                     key={`${rowIndex}-${colIndex}`}
-                    className={clsx(
-                      'w-12 h-12 border border-white flex items-center justify-center',
-                      ENTITY?.[col.entityType]?.bgColor,
-                    )}
+                    className="w-12 h-12 border border-white flex items-center justify-center bg-green-500"
                   >
                     <span className="rounded-full p-2 leading-none" />
                   </div>
@@ -260,10 +257,11 @@ export const PokemonGame = () => {
                         className={clsx(
                           {
                             ['-translate-x-2 -translate-y-2']: showTooltip === `${rowIndex}-${colIndex}`,
+                            ['bg-purple-500']: col.entityType === ENTITY.TRAINER.type,
+                            ['bg-red-500']: col.entityType === ENTITY.POKEMON.type,
                           },
                           'transition-all duration-300 ease-in-out',
                           'w-12 h-12 border flex items-center justify-center cursor-pointer',
-                          ENTITY?.[col.entityType]?.bgColor,
                         )}
                       >
                         <span

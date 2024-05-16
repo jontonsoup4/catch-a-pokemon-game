@@ -1,11 +1,13 @@
 export const GRID = {
   ROW: {
-    min: 2,
+    query: 'rows',
+    min: 1,
     max: 15,
     default_num: 10,
   },
   COL: {
-    min: 2,
+    query: 'cols',
+    min: 1,
     max: 15,
     default_num: 10,
   },
@@ -17,6 +19,7 @@ export const ENTITY = {
   },
   TRAINER: {
     type: 'TRAINER',
+    query: 'trainers',
     min: 1,
     max: 10,
     default_num: 7,

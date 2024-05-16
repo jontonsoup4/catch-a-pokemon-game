@@ -16,13 +16,17 @@ export const PokemonGame = () => {
   const [activePokemon, setActivePokemon] = useState({});
   const [trainers, setTrainers] = useState({});
   const [numTrainers, setNumTrainers] = useState(
-    minMax(Number(searchParams.get('trainers')) || ENTITY.TRAINER.default_num, ENTITY.TRAINER.min, ENTITY.TRAINER.max),
+    minMax(
+      Number(searchParams.get(ENTITY.TRAINER.query)) || ENTITY.TRAINER.default_num,
+      ENTITY.TRAINER.min,
+      ENTITY.TRAINER.max,
+    ),
   );
   const [numRows, setNumRows] = useState(
-    minMax(Number(searchParams.get('rows')) || GRID.ROW.default_num, GRID.ROW.min, GRID.ROW.max),
+    minMax(Number(searchParams.get(GRID.ROW.query)) || GRID.ROW.default_num, GRID.ROW.min, GRID.ROW.max),
   );
   const [numCols, setNumCols] = useState(
-    minMax(Number(searchParams.get('cols')) || GRID.COL.default_num, GRID.COL.min, GRID.COL.max),
+    minMax(Number(searchParams.get(GRID.COL.query)) || GRID.COL.default_num, GRID.COL.min, GRID.COL.max),
   );
   const gridRef = useRef(null);
   const controlsRef = useRef(null);
@@ -68,10 +72,10 @@ export const PokemonGame = () => {
         return acc;
       }, {});
 
-    const newGrid = Array(numRows)
+    const newGrid = Array(numRows || 1)
       .fill()
       .map(() =>
-        Array(numCols)
+        Array(numCols || 2)
           .fill()
           .map(() => ({ entityType: ENTITY.LAND.type })),
       );
@@ -89,6 +93,7 @@ export const PokemonGame = () => {
     };
 
     const setRandomItemInGrid = (item) => {
+      if (!item || emptyPositions.length === 0) return;
       const randomIndex = getRandomInt(emptyPositions.length - 1);
       const { row, col } = emptyPositions[randomIndex];
       newGrid[row][col] = item;
@@ -97,6 +102,7 @@ export const PokemonGame = () => {
     };
 
     const emptyPositions = getEmptyPositions();
+    if (emptyPositions.length === 0) return;
 
     const { row: pokemonRow, col: pokemonCol } = setRandomItemInGrid(newActivePokemon);
     newActivePokemon.row = pokemonRow;
@@ -135,20 +141,26 @@ export const PokemonGame = () => {
   };
 
   const handleChangeNumTrainers = (e) => {
-    const newNumTrainers = parseInt(e.target.value, 10);
-    router.push(`?${createQueryString('trainers', newNumTrainers)}`);
+    const newNumTrainers = minMax(parseInt(e.target.value, 10), ENTITY.TRAINER.min, ENTITY.TRAINER.max);
+    if (newNumTrainers) {
+      router.push(`?${createQueryString(ENTITY.TRAINER.query, newNumTrainers)}`);
+    }
     setNumTrainers(newNumTrainers);
   };
 
   const handleChangeRows = (e) => {
-    const newNumRows = parseInt(e.target.value, 10);
-    router.push(`?${createQueryString('rows', newNumRows)}`);
+    const newNumRows = minMax(parseInt(e.target.value, 10), GRID.ROW.min, GRID.ROW.max);
+    if (newNumRows) {
+      router.push(`?${createQueryString(GRID.ROW.query, newNumRows)}`);
+    }
     setNumRows(newNumRows);
   };
 
   const handleChangeCols = (e) => {
-    const newNumCols = parseInt(e.target.value, 10);
-    router.push(`?${createQueryString('cols', newNumCols)}`);
+    const newNumCols = minMax(parseInt(e.target.value, 10), GRID.ROW.min, GRID.COL.max);
+    if (newNumCols) {
+      router.push(`?${createQueryString(GRID.COL.query, newNumCols)}`);
+    }
     setNumCols(newNumCols);
   };
 
@@ -160,17 +172,23 @@ export const PokemonGame = () => {
     <div className="max-h-screen w-full flex flex-col items-center justify-start">
       <div className="my-8 w-72" ref={controlsRef}>
         <h2 className="mb-2 font-bold text-2xl">{pluralize('Winning Trainer', trainersSortedByTime.length)}</h2>
-        <div>
-          <span className="font-bold">{pluralize('Name', trainersSortedByTime.length)}:</span>{' '}
-          {trainersSortedByTime.map((trainer) => trainer?.name).join(', ')}
-        </div>
-        <div>
-          <span className="font-bold">{pluralize('Ball', trainersSortedByTime.length)}:</span>{' '}
-          {trainersSortedByTime.map((trainer) => trainer?.pokeball?.name).join(', ')}
-        </div>
-        <div className="mb-4">
-          <span className="font-bold">Time:</span> {fastestTime?.toFixed(2)}
-        </div>
+        {trainersSortedByTime.length >= 1 ? (
+          <>
+            <div>
+              <span className="font-bold">{pluralize('Name', trainersSortedByTime.length)}:</span>{' '}
+              {trainersSortedByTime.map((trainer) => trainer?.name).join(', ')}
+            </div>
+            <div>
+              <span className="font-bold">{pluralize('Ball', trainersSortedByTime.length)}:</span>{' '}
+              {trainersSortedByTime.map((trainer) => trainer?.pokeball?.name).join(', ')}
+            </div>
+            <div className="mb-4">
+              <span className="font-bold">Time:</span> {fastestTime?.toFixed(2)}
+            </div>
+          </>
+        ) : (
+          <div className="mb-4">The friends we made along the way</div>
+        )}
         <div className="flex flex-col gap-y-2">
           <div className="flex flex-col gap-y-2">
             <div className="font-bold">Number of Trainers:</div>

@@ -169,9 +169,9 @@ export const PokemonGame = () => {
   };
 
   return (
-    <div className="max-h-screen w-full flex flex-col items-center justify-start">
+    <div className="flex max-h-screen w-full flex-col items-center justify-start">
       <div className="my-8 w-72" ref={controlsRef}>
-        <h2 className="mb-2 font-bold text-2xl">{pluralize('Winning Trainer', trainersSortedByTime.length)}</h2>
+        <h2 className="mb-2 text-2xl font-bold">{pluralize('Winning Trainer', trainersSortedByTime.length)}</h2>
         {trainersSortedByTime.length >= 1 ? (
           <>
             <div>
@@ -199,7 +199,7 @@ export const PokemonGame = () => {
               name="trainers"
               value={numTrainers}
               onChange={handleChangeNumTrainers}
-              className="w-full text-center block rounded-lg border-none bg-neutral-800 py-1.5 px-3 text-sm/6 text-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+              className="block w-full rounded-lg border-none bg-neutral-800 px-3 py-1.5 text-center text-sm/6 text-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
             />
           </div>
           <div className="flex flex-col gap-y-2">
@@ -212,7 +212,7 @@ export const PokemonGame = () => {
                 name="rows"
                 value={numRows}
                 onChange={handleChangeRows}
-                className="w-full text-center block rounded-lg border-none bg-neutral-800 py-1.5 px-3 text-sm/6 text-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                className="block w-full rounded-lg border-none bg-neutral-800 px-3 py-1.5 text-center text-sm/6 text-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
               />
               <Input
                 min={GRID.COL.min}
@@ -221,12 +221,12 @@ export const PokemonGame = () => {
                 name="cols"
                 value={numCols}
                 onChange={handleChangeCols}
-                className="w-full text-center block rounded-lg border-none bg-neutral-800 py-1.5 px-3 text-sm/6 text-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                className="block w-full rounded-lg border-none bg-neutral-800 px-3 py-1.5 text-center text-sm/6 text-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
               />
             </div>
             <Button
               onClick={resetGrid}
-              className="w-full text-center items-center gap-2 rounded-md bg-neutral-800 py-1.5 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[hover]:bg-neutral-600 data-[active]:bg-neutral-700 data-[focus]:outline-1 data-[focus]:outline-white"
+              className="w-full items-center gap-2 rounded-md bg-neutral-800 px-3 py-1.5 text-center text-sm/6 font-semibold text-white focus:outline-none data-[active]:bg-neutral-700 data-[hover]:bg-neutral-600 data-[focus]:outline-1 data-[focus]:outline-white"
             >
               Generate Grid
             </Button>
@@ -248,7 +248,7 @@ export const PokemonGame = () => {
                 return (
                   <div
                     key={`${rowIndex}-${colIndex}`}
-                    className="w-12 h-12 border border-white flex items-center justify-center bg-green-500"
+                    className="flex h-12 w-12 items-center justify-center border border-white bg-green-500"
                   >
                     <span className="rounded-full p-2 leading-none" />
                   </div>
@@ -267,7 +267,7 @@ export const PokemonGame = () => {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Button
-                      className="w-12 h-12"
+                      className="h-12 w-12"
                       onMouseEnter={handleOnMouseEnter(`${rowIndex}-${colIndex}`)}
                       onMouseLeave={handleOnMouseLeave}
                     >
@@ -279,7 +279,7 @@ export const PokemonGame = () => {
                             ['bg-red-500']: col.entityType === ENTITY.POKEMON.type,
                           },
                           'transition-all duration-300 ease-in-out',
-                          'w-12 h-12 border flex items-center justify-center cursor-pointer',
+                          'flex h-12 w-12 cursor-pointer items-center justify-center border',
                         )}
                       >
                         <span
@@ -292,7 +292,7 @@ export const PokemonGame = () => {
                         </span>
                       </div>
                     </Menu.Button>
-                    <Menu.Items className="rounded-lg bg-neutral-800/60 backdrop-blur-2xl p-4" static>
+                    <Menu.Items className="rounded-lg bg-neutral-800/60 p-4 backdrop-blur-2xl" static>
                       {col.entityType === ENTITY.POKEMON.type && (
                         <div>
                           <div>Pokemon</div>

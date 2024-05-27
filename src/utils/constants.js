@@ -59,8 +59,32 @@ export const TRAINERS = [
 ];
 
 export const POKEBALLS = [
-  { id: '1', name: 'Pokeball', entityType: ENTITY.POKEBALL.type, speed: 1, rarity: 50 },
-  { id: '2', name: 'Greatball', entityType: ENTITY.POKEBALL.type, speed: 2, rarity: 25 },
-  { id: '3', name: 'Ultraball', entityType: ENTITY.POKEBALL.type, speed: 3, rarity: 15 },
-  { id: '4', name: 'Masterball', entityType: ENTITY.POKEBALL.type, speed: 4, rarity: 10 },
+  {
+    id: '1',
+    name: 'Pokeball',
+    entityType: ENTITY.POKEBALL.type,
+    speed: 1,
+    rarity: 50,
+  },
+  {
+    id: '2',
+    name: 'Greatball',
+    entityType: ENTITY.POKEBALL.type,
+    speed: 2,
+    rarity: 25,
+  },
+  {
+    id: '3',
+    name: 'Ultraball',
+    entityType: ENTITY.POKEBALL.type,
+    speed: 3,
+    rarity: 15,
+  },
+  {
+    id: '4',
+    name: 'Masterball',
+    entityType: ENTITY.POKEBALL.type,
+    speed: 4,
+    rarity: 10,
+  },
 ];

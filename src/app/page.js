@@ -17,22 +17,35 @@ export const PokemonGame = () => {
   const [trainers, setTrainers] = useState({});
   const [numTrainers, setNumTrainers] = useState(
     minMax(
-      Number(searchParams.get(ENTITY.TRAINER.query)) || ENTITY.TRAINER.default_num,
+      Number(searchParams.get(ENTITY.TRAINER.query)) ||
+        ENTITY.TRAINER.default_num,
       ENTITY.TRAINER.min,
       ENTITY.TRAINER.max,
     ),
   );
   const [numRows, setNumRows] = useState(
-    minMax(Number(searchParams.get(GRID.ROW.query)) || GRID.ROW.default_num, GRID.ROW.min, GRID.ROW.max),
+    minMax(
+      Number(searchParams.get(GRID.ROW.query)) || GRID.ROW.default_num,
+      GRID.ROW.min,
+      GRID.ROW.max,
+    ),
   );
   const [numCols, setNumCols] = useState(
-    minMax(Number(searchParams.get(GRID.COL.query)) || GRID.COL.default_num, GRID.COL.min, GRID.COL.max),
+    minMax(
+      Number(searchParams.get(GRID.COL.query)) || GRID.COL.default_num,
+      GRID.COL.min,
+      GRID.COL.max,
+    ),
   );
   const gridRef = useRef(null);
   const controlsRef = useRef(null);
 
   useEffect(() => {
-    if (!searchParams.get('rows') || !searchParams.get('cols') || !searchParams.get('trainers')) {
+    if (
+      !searchParams.get('rows') ||
+      !searchParams.get('cols') ||
+      !searchParams.get('trainers')
+    ) {
       router.push(
         `?${createQueryString('rows', numRows)}&${createQueryString('cols', numCols)}&${createQueryString(
           'trainers',
@@ -104,12 +117,15 @@ export const PokemonGame = () => {
     const emptyPositions = getEmptyPositions();
     if (emptyPositions.length === 0) return;
 
-    const { row: pokemonRow, col: pokemonCol } = setRandomItemInGrid(newActivePokemon);
+    const { row: pokemonRow, col: pokemonCol } =
+      setRandomItemInGrid(newActivePokemon);
     newActivePokemon.row = pokemonRow;
     newActivePokemon.col = pokemonCol;
 
     if (Object.keys(newTrainers).length > emptyPositions.length) {
-      const trainersToRemove = Object.keys(newTrainers).slice(emptyPositions.length);
+      const trainersToRemove = Object.keys(newTrainers).slice(
+        emptyPositions.length,
+      );
       trainersToRemove.forEach((trainerId) => {
         delete newTrainers[trainerId];
       });
@@ -117,7 +133,10 @@ export const PokemonGame = () => {
 
     Object.values(newTrainers).forEach((trainer, index) => {
       const { row, col } = setRandomItemInGrid(trainer);
-      const time = Math.sqrt(Math.pow(pokemonRow - row, 2) + Math.pow(pokemonCol - col, 2)) / trainer?.pokeball?.speed;
+      const time =
+        Math.sqrt(
+          Math.pow(pokemonRow - row, 2) + Math.pow(pokemonCol - col, 2),
+        ) / trainer?.pokeball?.speed;
       newTrainers[trainer.id].row = row;
       newTrainers[trainer.id].col = col;
       newTrainers[trainer.id].time = time;
@@ -127,8 +146,12 @@ export const PokemonGame = () => {
     setTrainers(newTrainers);
   };
 
-  const fastestTime = Object.values(trainers).sort((a, b) => a.time - b.time)?.[0]?.time;
-  const trainersSortedByTime = Object.values(trainers).filter((trainer) => trainer.time === fastestTime);
+  const fastestTime = Object.values(trainers).sort(
+    (a, b) => a.time - b.time,
+  )?.[0]?.time;
+  const trainersSortedByTime = Object.values(trainers).filter(
+    (trainer) => trainer.time === fastestTime,
+  );
 
   const handleOnMouseEnter = (id) => (e) => {
     e.stopPropagation();
@@ -141,15 +164,25 @@ export const PokemonGame = () => {
   };
 
   const handleChangeNumTrainers = (e) => {
-    const newNumTrainers = minMax(parseInt(e.target.value, 10), ENTITY.TRAINER.min, ENTITY.TRAINER.max);
+    const newNumTrainers = minMax(
+      parseInt(e.target.value, 10),
+      ENTITY.TRAINER.min,
+      ENTITY.TRAINER.max,
+    );
     if (newNumTrainers) {
-      router.push(`?${createQueryString(ENTITY.TRAINER.query, newNumTrainers)}`);
+      router.push(
+        `?${createQueryString(ENTITY.TRAINER.query, newNumTrainers)}`,
+      );
     }
     setNumTrainers(newNumTrainers);
   };
 
   const handleChangeRows = (e) => {
-    const newNumRows = minMax(parseInt(e.target.value, 10), GRID.ROW.min, GRID.ROW.max);
+    const newNumRows = minMax(
+      parseInt(e.target.value, 10),
+      GRID.ROW.min,
+      GRID.ROW.max,
+    );
     if (newNumRows) {
       router.push(`?${createQueryString(GRID.ROW.query, newNumRows)}`);
     }
@@ -157,7 +190,11 @@ export const PokemonGame = () => {
   };
 
   const handleChangeCols = (e) => {
-    const newNumCols = minMax(parseInt(e.target.value, 10), GRID.ROW.min, GRID.COL.max);
+    const newNumCols = minMax(
+      parseInt(e.target.value, 10),
+      GRID.ROW.min,
+      GRID.COL.max,
+    );
     if (newNumCols) {
       router.push(`?${createQueryString(GRID.COL.query, newNumCols)}`);
     }
@@ -171,16 +208,24 @@ export const PokemonGame = () => {
   return (
     <div className="flex max-h-screen w-full flex-col items-center justify-start">
       <div className="my-8 w-72" ref={controlsRef}>
-        <h2 className="mb-2 text-2xl font-bold">{pluralize('Winning Trainer', trainersSortedByTime.length)}</h2>
+        <h2 className="mb-2 text-2xl font-bold">
+          {pluralize('Winning Trainer', trainersSortedByTime.length)}
+        </h2>
         {trainersSortedByTime.length >= 1 ? (
           <>
             <div>
-              <span className="font-bold">{pluralize('Name', trainersSortedByTime.length)}:</span>{' '}
+              <span className="font-bold">
+                {pluralize('Name', trainersSortedByTime.length)}:
+              </span>{' '}
               {trainersSortedByTime.map((trainer) => trainer?.name).join(', ')}
             </div>
             <div>
-              <span className="font-bold">{pluralize('Ball', trainersSortedByTime.length)}:</span>{' '}
-              {trainersSortedByTime.map((trainer) => trainer?.pokeball?.name).join(', ')}
+              <span className="font-bold">
+                {pluralize('Ball', trainersSortedByTime.length)}:
+              </span>{' '}
+              {trainersSortedByTime
+                .map((trainer) => trainer?.pokeball?.name)
+                .join(', ')}
             </div>
             <div className="mb-4">
               <span className="font-bold">Time:</span> {fastestTime?.toFixed(2)}
@@ -268,15 +313,20 @@ export const PokemonGame = () => {
                   >
                     <Menu.Button
                       className="h-12 w-12"
-                      onMouseEnter={handleOnMouseEnter(`${rowIndex}-${colIndex}`)}
+                      onMouseEnter={handleOnMouseEnter(
+                        `${rowIndex}-${colIndex}`,
+                      )}
                       onMouseLeave={handleOnMouseLeave}
                     >
                       <div
                         className={clsx(
                           {
-                            ['-translate-x-2 -translate-y-2']: showTooltip === `${rowIndex}-${colIndex}`,
-                            ['bg-purple-500']: col.entityType === ENTITY.TRAINER.type,
-                            ['bg-red-500']: col.entityType === ENTITY.POKEMON.type,
+                            ['-translate-x-2 -translate-y-2']:
+                              showTooltip === `${rowIndex}-${colIndex}`,
+                            ['bg-purple-500']:
+                              col.entityType === ENTITY.TRAINER.type,
+                            ['bg-red-500']:
+                              col.entityType === ENTITY.POKEMON.type,
                           },
                           'transition-all duration-300 ease-in-out',
                           'flex h-12 w-12 cursor-pointer items-center justify-center border',
@@ -285,14 +335,18 @@ export const PokemonGame = () => {
                         <span
                           className={clsx('rounded-full p-2 leading-none', {
                             ['bg-yellow-500']:
-                              col.entityType === ENTITY.TRAINER.type && fastestTime === trainers[col.id].time,
+                              col.entityType === ENTITY.TRAINER.type &&
+                              fastestTime === trainers[col.id].time,
                           })}
                         >
                           {col?.name?.[0]}
                         </span>
                       </div>
                     </Menu.Button>
-                    <Menu.Items className="rounded-lg bg-neutral-800/60 p-4 backdrop-blur-2xl" static>
+                    <Menu.Items
+                      className="rounded-lg bg-neutral-800/60 p-4 backdrop-blur-2xl"
+                      static
+                    >
                       {col.entityType === ENTITY.POKEMON.type && (
                         <div>
                           <div>Pokemon</div>
